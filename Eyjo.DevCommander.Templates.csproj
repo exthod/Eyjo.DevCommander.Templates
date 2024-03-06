@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>0.23</PackageVersion>
+    <PackageVersion>0.23.1</PackageVersion>
     <PackageId>Eyjo.DevCommander.Templates</PackageId>
     <Title>Eyjo DevCommander Templates</Title>
     <Authors>Eyvind Joensen</Authors>

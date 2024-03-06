@@ -6,7 +6,7 @@
     "wpf"
   ],
   "identity": "Eyjo.DevCommander.App.CSharp",
-  "name": "Eyjo DevCommander WFP Application",
+  "name": "DevCommander WPF Application",
   "shortName": "dcapp",
   "preferNameDirectory": true,
   "sourceName": "MyDevCommanderApp",

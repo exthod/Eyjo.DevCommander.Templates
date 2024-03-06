@@ -6,7 +6,7 @@
     "wpf"
   ],
   "identity": "Eyjo.DevCommander.Module.CSharp",
-  "name": "Eyjo DevCommander WPF Module",
+  "name": "DevCommander WPF Module",
   "shortName": "dcmodule",
   "preferNameDirectory": true,
   "sourceName": "MyModule",
