@@ -32,6 +32,7 @@ namespace MyDevCommanderApp.Modules.MyModule
 
 		private void InputActionCommand_Execute(object obj)
 		{
+			_logger.LogInformation("Action was pressed.");
 			_shell.DisplayMessage("Action pressed...");
 		}
 

@@ -51,7 +51,10 @@ namespace MyDevCommanderApp
 			try
 			{
 				_host.Start();
-				_ = _host.StartDevCommander();
+				_ = _host.StartDevCommander(config =>
+				{
+					config.Title = "MyDevCommanderApp";
+				});
 
 				_windowShellModel = _host.Services.GetService<IWindowsShellNotifications>();
 				_windowShellModel.IsEnabled = true;

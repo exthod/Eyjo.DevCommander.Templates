@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>0.23.1</PackageVersion>
+    <PackageVersion>0.26.0</PackageVersion>
     <PackageId>Eyjo.DevCommander.Templates</PackageId>
     <Title>Eyjo DevCommander Templates</Title>
     <Authors>Eyvind Joensen</Authors>
@@ -11,7 +11,7 @@
 
     <Description>Templates to use when creating modules or applications using the Eyjo DevCommander.</Description>
     <PackageTags>dotnet-new;templates;eyjo</PackageTags>
-    <TargetFramework>net6-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseFile>license.md</PackageLicenseFile>
 

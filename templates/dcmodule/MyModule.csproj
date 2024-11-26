@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Version>1.0.0</Version>
     <Nullable>disable</Nullable>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eyjo.DevCommander.WpfLibrary" Version="0.23.0" />
+    <PackageReference Include="Eyjo.DevCommander.WpfLibrary" Version="0.26.0" />
   </ItemGroup>
 
 </Project>
