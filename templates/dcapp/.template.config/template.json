@@ -3,13 +3,13 @@
   "author": "Eyjo",
   "classifications": [
     "Common",
-    "wpf"
+    "WPF"
   ],
   "identity": "Eyjo.DevCommander.App.CSharp",
   "name": "DevCommander WPF Application",
   "shortName": "dcapp",
   "preferNameDirectory": true,
-  "sourceName": "MyDevCommanderApp",
+  "sourceName": "DevCommanderModuleNameApp",
   "tags": {
     "language": "C#",
     "type": "project"
@@ -17,8 +17,9 @@
   "symbols": {
     "ModuleName": {
       "type": "parameter",
-      "defaultValue": "MyModule",
-      "replaces": "DevCommanderModuleName"
+      "isRequired": true,
+      "replaces": "DevCommanderModuleName",
+      "fileRename": "DevCommanderModuleName"
     }
   }
 }

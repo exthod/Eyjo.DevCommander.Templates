@@ -3,7 +3,7 @@ This package contains .NET templates for the Eyjo DevCommander - the personal de
 
 Usage:
  
-	dotnet new dcapp
+	dotnet new dcapp --ModuleName "MyFeature"
 or
 
-	dotnet new dcmodule
+	dotnet new dcmodule --ModuleName "MyFeature"

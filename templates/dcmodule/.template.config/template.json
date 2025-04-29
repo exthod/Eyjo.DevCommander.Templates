@@ -2,22 +2,20 @@
   "$schema": "http://json.schemastore.org/template",
   "author": "Eyjo",
   "classifications": [
-    "Common",
-    "wpf"
+    "Files",
+    "WPF"
   ],
   "identity": "Eyjo.DevCommander.Module.CSharp",
   "name": "DevCommander WPF Module",
   "shortName": "dcmodule",
-  "preferNameDirectory": true,
-  "sourceName": "MyModule",
   "tags": {
-    "language": "C#",
-    "type": "project"
+    "type": "item"
   },
   "symbols": {
     "ModuleName": {
       "type": "parameter",
-      "defaultValue": "MyModule",
+      "isRequired": true,
+      "fileRename": "DevCommanderModuleName",
       "replaces": "DevCommanderModuleName"
     }
   }

@@ -1,7 +1,6 @@
 ﻿using Eyjo.DevCommander;
 using Eyjo.DevCommander.Extensions;
 using Eyjo.DevCommander.WpfLibrary;
-using Eyjo.DevCommander.WpfLibrary.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,16 +9,18 @@ using System;
 using System.IO;
 using System.Windows;
 
-namespace MyDevCommanderApp
+namespace DevCommanderModuleNameApp
 {
-	/// <summary>The MyDevCommanderApp WPF Application.</summary>
+	/// <summary>The DevCommanderModuleName WPF Application.</summary>
 	public partial class App : Application
 	{
 		private IHost _host;
-		private IWindowsShellNotifications _windowShellModel;
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
+			string applicationName = "DevCommanderModuleNameApp";
+			string applicationDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"DevCommanderApps\\{applicationName}");
+
 			ConfigurationBuilder builder = new();
 			IConfigurationRoot _configurationRoot = builder.SetBasePath(Directory.GetCurrentDirectory())
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -28,9 +29,8 @@ namespace MyDevCommanderApp
 			_host = Host.CreateDefaultBuilder()
 				.UseSerilog((context, loggerConfiguration) =>
 				{
-					string applicationDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 					loggerConfiguration
-						.WriteTo.File(Path.Combine(applicationDataPath, "MyDevCommanderApp", "MyDevCommanderApp.log"), rollingInterval: RollingInterval.Day)
+						.WriteTo.File(Path.Combine(applicationDataPath, "Logs\\dc.log"), rollingInterval: RollingInterval.Day)
 						.MinimumLevel.Debug()
 						.WriteTo.Debug();
 				})
@@ -40,7 +40,7 @@ namespace MyDevCommanderApp
 				})
 				.UseDevCommander((plugInHandler) =>
 				{
-					// Uncomment to load IDevCommanderModule plug-ins from the "PlugIns" folder.
+					// Uncomment to load IDevCommanderModule plug-ins from the "PlugIns" folder:
 					//plugInHandler.SearchFileOrFolder("PlugIns", SearchOption.AllDirectories);
 				})
 				.UseDevCommanderClassicTheme()
@@ -53,16 +53,14 @@ namespace MyDevCommanderApp
 				_host.Start();
 				_ = _host.StartDevCommander(config =>
 				{
-					config.Title = "MyDevCommanderApp";
+					config.Title = applicationName;
+					config.StorageFolder = applicationDataPath;
 				});
-
-				_windowShellModel = _host.Services.GetService<IWindowsShellNotifications>();
-				_windowShellModel.IsEnabled = true;
 			}
 			catch (Exception ex)
 			{
-				string message = "Woops - failed to start MyDevCommanderApp..!";
-				MessageBox.Show(ex.FormatExceptionMessage(message), "MyDevCommanderApp", MessageBoxButton.OK, MessageBoxImage.Error);
+				string message = $"Woops - failed to start {applicationName}..!";
+				MessageBox.Show(ex.FormatExceptionMessage(message), applicationName, MessageBoxButton.OK, MessageBoxImage.Error);
 				Application.Current.Shutdown();
 			}
 

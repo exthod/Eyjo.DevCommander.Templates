@@ -1,8 +1,12 @@
-﻿<Application x:Class="MyDevCommanderApp.App"
+﻿<Application x:Class="DevCommanderModuleNameApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MyDevCommanderApp">
-    <Application.Resources>
-         
-    </Application.Resources>
+             xmlns:local="clr-namespace:DevCommanderModuleNameApp">
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/Eyjo.DevCommander.WpfLibrary;component/Themes/DevCommanderStyles.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
 </Application>
