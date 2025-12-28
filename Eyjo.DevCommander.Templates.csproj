@@ -1,33 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <PackageType>Template</PackageType>
-    <PackageVersion>0.30.3</PackageVersion>
-    <PackageId>Eyjo.DevCommander.Templates</PackageId>
-    <Title>Eyjo DevCommander Templates</Title>
-    <Authors>Eyvind Joensen</Authors>
-    <Company>Eyjo</Company>
-    <Copyright>Copyright © Eyjo 2025</Copyright>
+	<PropertyGroup>
+		<PackageType>Template</PackageType>
+		<PackageVersion>0.31.1</PackageVersion>
+		<PackageId>Eyjo.DevCommander.Templates</PackageId>
+		<Title>Eyjo DevCommander Templates</Title>
+		<Authors>Eyvind Joensen</Authors>
+		<Company>Eyjo</Company>
+		<Copyright>Copyright © Eyjo 2026</Copyright>
 
-    <Description>Templates to use when creating modules or applications using the Eyjo DevCommander.</Description>
-    <PackageTags>dotnet-new;templates;eyjo</PackageTags>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageLicenseFile>license.md</PackageLicenseFile>
+		<Description>Templates to use when creating modules or applications using the Eyjo DevCommander.</Description>
+		<PackageTags>dotnet-new;templates;eyjo</PackageTags>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<PackageLicenseFile>license.md</PackageLicenseFile>
 
-    <IncludeContentInPack>true</IncludeContentInPack>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <ContentTargetFolders>content</ContentTargetFolders>
-  </PropertyGroup>
+		<IncludeContentInPack>true</IncludeContentInPack>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<ContentTargetFolders>content</ContentTargetFolders>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="docs\readme.md" Pack="true" PackagePath="\"/>
-    <None Include="docs\license.md" Pack="true" PackagePath="\"/>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="docs\readme.md" Pack="true" PackagePath="\"/>
+		<None Include="docs\license.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
-    <Compile Remove="**\*" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
+		<Compile Remove="**\*" />
+	</ItemGroup>
 
 </Project>

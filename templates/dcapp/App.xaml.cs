@@ -1,6 +1,6 @@
 ﻿using Eyjo.DevCommander;
-using Eyjo.DevCommander.Extensions;
 using Eyjo.DevCommander.WpfLibrary;
+using Eyjo.Toolkit.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
