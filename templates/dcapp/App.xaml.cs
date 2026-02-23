@@ -18,8 +18,11 @@ namespace DevCommanderModuleNameApp
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
-			string applicationName = "DevCommanderModuleNameApp";
-			string applicationDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"DevCommanderApps\\{applicationName}");
+			string applicationDisplayName = "DevCommanderModuleNameApp";
+
+			// Remove potential invalid folder characters
+			string applicationDataName = string.Concat(applicationDisplayName.Split(Path.GetInvalidFileNameChars()));
+			string applicationDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"DevCommanderApps\\{applicationDataName}");
 
 			ConfigurationBuilder builder = new();
 			IConfigurationRoot _configurationRoot = builder.SetBasePath(Directory.GetCurrentDirectory())
@@ -48,19 +51,27 @@ namespace DevCommanderModuleNameApp
 
 			ShutdownMode = ShutdownMode.OnMainWindowClose;
 
+			// Global unhandled exception handler:
+			Application.Current.DispatcherUnhandledException += (sender, args) =>
+			{
+				string message = "Woops - an unhandled exception occurred..!";
+				MessageBox.Show(args.Exception.FormatExceptionMessage(message), applicationDisplayName, MessageBoxButton.OK, MessageBoxImage.Error);
+				args.Handled = true;
+			};
+
 			try
 			{
 				_host.Start();
 				_ = _host.StartDevCommander(config =>
 				{
-					config.Title = applicationName;
+					config.Title = applicationDisplayName;
 					config.StorageFolder = applicationDataPath;
 				});
 			}
 			catch (Exception ex)
 			{
-				string message = $"Woops - failed to start {applicationName}..!";
-				MessageBox.Show(ex.FormatExceptionMessage(message), applicationName, MessageBoxButton.OK, MessageBoxImage.Error);
+				string message = $"Woops - failed to start {applicationDisplayName}..!";
+				MessageBox.Show(ex.FormatExceptionMessage(message), applicationDisplayName, MessageBoxButton.OK, MessageBoxImage.Error);
 				Application.Current.Shutdown();
 			}
 
