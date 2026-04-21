@@ -21,6 +21,12 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 			Title = "DevCommanderModuleName";
 			SaveCommand = _commandProvider.CreateDelegateCommand(SaveCommand_Execute, SaveCommand_CanExecute);
 
+			PropertyChanged += (s, e) =>
+			{
+				// Whenever a property changes, we check if there are any validation errors and update the buttons accordingly.
+				if (e.PropertyName == nameof(HasErrors)) UpdateViewButtons();
+			};
+
 			_settings = _shell.GetSettings<DevCommanderModuleNameSettings>();
 			SampleString = _settings.SampleSetting1;
 			SampleInteger = _settings.SampleSetting2;
@@ -50,6 +56,16 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 
 		public IDelegateCommand SaveCommand { get; }
 
+		/// <inheritdoc/>
+		protected override string DoValidateProperties(string propertyName)
+		{
+			return propertyName switch
+			{
+				nameof(SampleString) => string.IsNullOrEmpty(SampleString) ? "Sample String cannot be empty." : null,
+				_ => null
+			};
+		}
+
 		private void SaveCommand_Execute(object obj)
 		{
 			_logger.LogInformation("Saving settings.");
@@ -57,7 +73,7 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 			_shell.DisplayMessage("Settings saved!", Title);
 		}
 
-		private bool SaveCommand_CanExecute(object obj) => SampleString?.Length > 0;
+		private bool SaveCommand_CanExecute(object obj) => !HasErrors;
 
 		private void UpdateViewButtons()
 		{
