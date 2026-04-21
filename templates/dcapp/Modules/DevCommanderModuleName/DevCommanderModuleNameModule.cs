@@ -37,7 +37,8 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 			_logger.LogDebug("Hello from {Name}", Name);
 			_shell.RegisterMainView<DevCommanderModuleNameView, DevCommanderModuleNameViewModel>("DevCommanderModuleName View", "\\DevCommanderModuleName Menu\\");
 
-			// TODO: Remove this DEBUG-builds-only clause to launch the view upon start in release mode too.
+			// TODO: Uncomment this to launch the view upon start. Could e.g. be done in DEBUG builds only.
+			//_shell.DisplayMainView<DevCommanderModuleNameView, DevCommanderModuleNameViewModel>();
 #if DEBUG
 			_shell.DisplayMainView<DevCommanderModuleNameView, DevCommanderModuleNameViewModel>();
 #endif
