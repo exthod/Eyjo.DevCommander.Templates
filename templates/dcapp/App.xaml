@@ -5,7 +5,7 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="pack://application:,,,/Eyjo.DevCommander.WpfLibrary;component/Themes/DevCommanderStyles.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/Eyjo.DevCommander.WpfLibrary;component/ClassicTheme/ClassicStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>
