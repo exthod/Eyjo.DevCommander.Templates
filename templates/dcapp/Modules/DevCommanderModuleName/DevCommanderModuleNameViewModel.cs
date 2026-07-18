@@ -9,13 +9,13 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 	{
 		private readonly ICommandProvider _commandProvider;
 		private readonly ILogger<DevCommanderModuleNameViewModel> _logger;
-		private readonly IShell _shell;
-		private DevCommanderModuleNameSettings _settings;
+		private readonly IViewContext _viewContext;
+		private readonly DevCommanderModuleNameSettings _settings;
 
-		public DevCommanderModuleNameViewModel(ILogger<DevCommanderModuleNameViewModel> logger, IShell shell, ICommandProvider commandProvider)
+		public DevCommanderModuleNameViewModel(ILogger<DevCommanderModuleNameViewModel> logger, IViewContext viewContext, ICommandProvider commandProvider)
 		{
 			_logger = logger;
-			_shell = shell;
+			_viewContext = viewContext;
 			_commandProvider = commandProvider;
 
 			Title = "DevCommanderModuleName";
@@ -27,7 +27,7 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 				if (e.PropertyName == nameof(HasErrors)) UpdateViewButtons();
 			};
 
-			_settings = _shell.GetSettings<DevCommanderModuleNameSettings>();
+			_settings = _viewContext.GetSettings<DevCommanderModuleNameSettings>();
 			SampleString = _settings.SampleSetting1;
 			SampleInteger = _settings.SampleSetting2;
 		}
@@ -69,8 +69,8 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 		private void SaveCommand_Execute(object obj)
 		{
 			_logger.LogInformation("Saving settings.");
-			_shell.SetSettings(_settings);
-			_shell.DisplayMessage("Settings saved!", Title);
+			_viewContext.SetSettings(_settings);
+			_viewContext.DisplayMessage("Settings saved!", Title);
 		}
 
 		private bool SaveCommand_CanExecute(object obj) => !HasErrors;

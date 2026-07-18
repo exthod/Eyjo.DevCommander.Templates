@@ -36,9 +36,9 @@ namespace Modules.DevCommanderModuleName
         {
             _logger.LogDebug("Hello from {Name}", Name);
             _shell.RegisterMainView<DevCommanderModuleNameView, DevCommanderModuleNameViewModel>("DevCommanderModuleName View", "\\DevCommanderModuleName Menu\\");
-#if DEBUG
-            _shell.DisplayMainView<DevCommanderModuleNameView, DevCommanderModuleNameViewModel>();
-#endif
-        }
+
+			// TODO: Remove this if launching the view should initiate from the menu only.
+			_shell.DisplayMainView<DevCommanderModuleNameView, DevCommanderModuleNameViewModel>();
+		}
 	}
 }

@@ -9,41 +9,75 @@ namespace Modules.DevCommanderModuleName
 	{
 		private readonly ICommandProvider _commandProvider;
 		private readonly ILogger<DevCommanderModuleNameViewModel> _logger;
-		private readonly IShell _shell;
+		private readonly IViewContext _viewContext;
+		private readonly DevCommanderModuleNameSettings _settings;
 
-		public DevCommanderModuleNameViewModel(ILogger<DevCommanderModuleNameViewModel> logger, IShell shell, ICommandProvider commandProvider)
+		public DevCommanderModuleNameViewModel(ILogger<DevCommanderModuleNameViewModel> logger, IViewContext viewContext, ICommandProvider commandProvider)
 		{
 			_logger = logger;
-			_shell = shell;
+			_viewContext = viewContext;
 			_commandProvider = commandProvider;
 
 			Title = "DevCommanderModuleName";
-			InputActionCommand = _commandProvider.CreateDelegateCommand(InputActionCommand_Execute, InputActionCommand_CanExecute);
+			SaveCommand = _commandProvider.CreateDelegateCommand(SaveCommand_Execute, SaveCommand_CanExecute);
+
+			PropertyChanged += (s, e) =>
+			{
+				// Whenever a property changes, we check if there are any validation errors and update the buttons accordingly.
+				if (e.PropertyName == nameof(HasErrors)) UpdateViewButtons();
+			};
+
+			_settings = _viewContext.GetSettings<DevCommanderModuleNameSettings>();
+			SampleString = _settings.SampleSetting1;
+			SampleInteger = _settings.SampleSetting2;
 		}
 
-		public string InputField
+		public string SampleString
 		{
-			get { return _inputField; }
-			set { SetField(ref _inputField, value, changeAction: UpdateViewButtons); }
+			get => _sampleString;
+			set 
+			{
+				SetField(ref _sampleString, value, changeAction: UpdateViewButtons); 
+				_settings.SampleSetting1 = _sampleString;
+			}
 		}
-		private string _inputField;
+		private string _sampleString;
 
-		public IDelegateCommand InputActionCommand { get; }
-
-		private void InputActionCommand_Execute(object obj)
+		public int SampleInteger
 		{
-			_logger.LogInformation("Action was pressed.");
-			_shell.DisplayMessage("Action pressed...", Title);
+			get => _sampleInteger;
+			set 
+			{
+				SetField(ref _sampleInteger, value, changeAction: UpdateViewButtons);
+				_settings.SampleSetting2 = _sampleInteger;
+			}
+		}
+		private int _sampleInteger;
+
+		public IDelegateCommand SaveCommand { get; }
+
+		/// <inheritdoc/>
+		protected override string DoValidateProperties(string propertyName)
+		{
+			return propertyName switch
+			{
+				nameof(SampleString) => string.IsNullOrEmpty(SampleString) ? "Sample String cannot be empty." : null,
+				_ => null
+			};
 		}
 
-		private bool InputActionCommand_CanExecute(object obj)
+		private void SaveCommand_Execute(object obj)
 		{
-			return InputField?.Length > 0;
+			_logger.LogInformation("Saving settings.");
+			_viewContext.SetSettings(_settings);
+			_viewContext.DisplayMessage("Settings saved!", Title);
 		}
+
+		private bool SaveCommand_CanExecute(object obj) => !HasErrors;
 
 		private void UpdateViewButtons()
 		{
-			RaiseCanExecute(InputActionCommand);
+			RaiseCanExecute(SaveCommand);
 		}
 	}
 }
