@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<PackageType>Template</PackageType>
-		<PackageVersion>0.39.0</PackageVersion>
+		<PackageVersion>0.40.0</PackageVersion>
 		<PackageId>Eyjo.DevCommander.Templates</PackageId>
 		<Title>Eyjo DevCommander Templates</Title>
 		<Authors>Eyvind Joensen</Authors>
@@ -18,6 +18,10 @@
 		<IncludeContentInPack>true</IncludeContentInPack>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<ContentTargetFolders>content</ContentTargetFolders>
+
+		<PackageReleaseNotes>
+			- Dependency updates.
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
