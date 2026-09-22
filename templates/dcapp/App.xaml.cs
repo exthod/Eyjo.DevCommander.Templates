@@ -23,6 +23,7 @@ namespace DevCommanderModuleNameApp
 			// Remove potential invalid folder characters
 			string applicationDataName = string.Concat(_applicationDisplayName.Split(Path.GetInvalidFileNameChars()));
 			string applicationDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), applicationDataName);
+			bool shutdown = false;
 
 			LoadConfiguration();
 			_host = SetupHost(applicationDataPath);
@@ -51,9 +52,13 @@ namespace DevCommanderModuleNameApp
 				catch (Exception ex)
 				{
 					DisplayError($"Woops - failed to start {_applicationDisplayName}..!", ex);
+					shutdown = true;
 				}
 			}
 			else
+				shutdown = true;
+
+			if (shutdown)
 			{
 				Application.Current.Shutdown();
 				return;
@@ -115,14 +120,15 @@ namespace DevCommanderModuleNameApp
 				   .UseDevCommander((plugInHandler) =>
 				   {
 					   // Load plug-ins from potentially configured folders. A plug-in is an assembly that contains at least one class that
-					   // implements the IDevCommanderPlugIn interface. The assembly can be located in any folder and will be loaded at runtime.
+					   // implements the IDevCommanderModule interface. The assembly can be located in any folder and will be loaded at runtime.
 					   // This allows for a flexible and extensible architecture, where new features can be added to the application without
 					   // modifying the existing codebase, simply by adding new plug-in assemblies to the designated folders.
 					   if (_shellConfiguration?.PlugInFolders != null)
 					   {
 						   foreach (string folder in _shellConfiguration.PlugInFolders)
 						   {
-							   if (Directory.Exists(folder)) plugInHandler.SearchFileOrFolder(folder, SearchOption.AllDirectories);
+							   string searchFolder = Path.Combine(AppContext.BaseDirectory, folder);
+							   if (Directory.Exists(searchFolder)) plugInHandler.SearchFileOrFolder(searchFolder, SearchOption.AllDirectories);
 						   }
 					   }
 				   })
