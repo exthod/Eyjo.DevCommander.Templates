@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 
 namespace DevCommanderModuleNameApp
@@ -45,7 +46,7 @@ namespace DevCommanderModuleNameApp
 					_ = _host.StartDevCommander(config =>
 					{
 						// Set up runtime configuration for DevCommander:
-						config.Title = _applicationDisplayName;
+						config.Title = $"{_applicationDisplayName} {GetApplicationVersion()}";
 						config.StorageFolder = applicationDataPath;
 					});
 				}
@@ -86,7 +87,7 @@ namespace DevCommanderModuleNameApp
 			{
 				// Set up configuration:
 				ConfigurationBuilder builder = new();
-				IConfigurationRoot configurationRoot = builder.SetBasePath(Directory.GetCurrentDirectory())
+				IConfigurationRoot configurationRoot = builder.SetBasePath(AppContext.BaseDirectory)
 					.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
 					.Build();
 
@@ -106,34 +107,35 @@ namespace DevCommanderModuleNameApp
 			{
 				// Set up host and dependency injection
 				host = Host.CreateDefaultBuilder()
-				   .UseSerilog((context, loggerConfiguration) =>
-				   {
-					   loggerConfiguration
-						   .WriteTo.File(Path.Combine(applicationDataPath, "Logs\\dc.log"), rollingInterval: RollingInterval.Day)
-						   .MinimumLevel.Debug()
-						   .WriteTo.Debug();
-				   })
-				   .ConfigureServices((context, services) =>
-				   {
-					   services.AddOptions();
-				   })
-				   .UseDevCommander((plugInHandler) =>
-				   {
-					   // Load plug-ins from potentially configured folders. A plug-in is an assembly that contains at least one class that
-					   // implements the IDevCommanderModule interface. The assembly can be located in any folder and will be loaded at runtime.
-					   // This allows for a flexible and extensible architecture, where new features can be added to the application without
-					   // modifying the existing codebase, simply by adding new plug-in assemblies to the designated folders.
-					   if (_shellConfiguration?.PlugInFolders != null)
-					   {
-						   foreach (string folder in _shellConfiguration.PlugInFolders)
-						   {
-							   string searchFolder = Path.Combine(AppContext.BaseDirectory, folder);
-							   if (Directory.Exists(searchFolder)) plugInHandler.SearchFileOrFolder(searchFolder, SearchOption.AllDirectories);
-						   }
-					   }
-				   })
-				   .UseDevCommanderClassicTheme()
-				   .Build();
+					.UseContentRoot(AppContext.BaseDirectory)
+					.UseSerilog((context, loggerConfiguration) =>
+					{
+						loggerConfiguration
+							.WriteTo.File(Path.Combine(applicationDataPath, "Logs\\dc.log"), rollingInterval: RollingInterval.Day)
+							.MinimumLevel.Debug()
+							.WriteTo.Debug();
+					})
+					.ConfigureServices((context, services) =>
+					{
+						services.AddOptions();
+					})
+					.UseDevCommander((plugInHandler) =>
+					{
+						// Load plug-ins from potentially configured folders. A plug-in is an assembly that contains at least one class that
+						// implements the IDevCommanderModule interface. The assembly can be located in any folder and will be loaded at runtime.
+						// This allows for a flexible and extensible architecture, where new features can be added to the application without
+						// modifying the existing codebase, simply by adding new plug-in assemblies to the designated folders.
+						if (_shellConfiguration?.PlugInFolders != null)
+						{
+							foreach (string folder in _shellConfiguration.PlugInFolders)
+							{
+								string searchFolder = Path.Combine(AppContext.BaseDirectory, folder);
+								if (Directory.Exists(searchFolder)) plugInHandler.SearchFileOrFolder(searchFolder, SearchOption.AllDirectories);
+							}
+						}
+					})
+					.UseDevCommanderClassicTheme()
+					.Build();
 			}
 			catch (Exception ex)
 			{
@@ -151,6 +153,15 @@ namespace DevCommanderModuleNameApp
 				message = innerException.FormatExceptionMessage(message);
 			}
 			MessageBox.Show(ex.FormatExceptionMessage(message), _applicationDisplayName, MessageBoxButton.OK, MessageBoxImage.Error);
+		}
+
+		private static string GetApplicationVersion()
+		{
+			Version version = Assembly.GetEntryAssembly().GetName().Version;
+			if (version is { })
+				return $"{version.Major}.{version.Minor}.{version.Build}";
+			else
+				return "";
 		}
 	}
 }
