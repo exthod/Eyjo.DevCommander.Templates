@@ -34,25 +34,23 @@ namespace DevCommanderModuleNameApp.Modules.DevCommanderModuleName
 
 		public string SampleString
 		{
-			get => _sampleString;
+			get;
 			set 
 			{
-				SetField(ref _sampleString, value, changeAction: UpdateViewButtons); 
-				_settings.SampleSetting1 = _sampleString;
+				SetField(ref field, value, changeAction: UpdateViewButtons); 
+				_settings.SampleSetting1 = field;
 			}
 		}
-		private string _sampleString;
 
 		public int SampleInteger
 		{
-			get => _sampleInteger;
+			get;
 			set 
 			{
-				SetField(ref _sampleInteger, value, changeAction: UpdateViewButtons);
-				_settings.SampleSetting2 = _sampleInteger;
+				SetField(ref field, value, changeAction: UpdateViewButtons);
+				_settings.SampleSetting2 = field;
 			}
 		}
-		private int _sampleInteger;
 
 		public IDelegateCommand SaveCommand { get; }
 
